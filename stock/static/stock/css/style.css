@@ -1,0 +1,334 @@
+/*STOCSHOP PREMIUM - FIXED*/
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;700&family=Space+Grotesk:wght@500;700&display=swap');
+
+:root{
+    --bg: #15151fe1;
+    --card: rgba(255, 255, 255, 0.184);
+    --card-border: rgba(255, 255, 255, 0.232);
+    --primary: #7c3aed;
+    --primary-2: #22daeefb;
+    --accent: #f43f5e;
+    --text: #f8fafc;
+    --text-dim: #94a3b8;
+    --success: #10b981;
+    --warning: #f59e0b;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-image:
+        radial-gradient(at 0% 0%, rgba(124,58,237,0.3) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(34,211,28,0.2) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(244,63,94,0.2) 0px, transparent 50%);
+    background-attachment: fixed;
+    text-align: center;    
+}
+
+body::before, body::after{
+    content: '';
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: -1;
+    animation: float 12s ease-in-out infinite;
+}
+
+body::before{
+    background: var(--primary), rgb(157, 82, 226);
+    top: -300px;
+    left:-300px;
+    opacity: 1.2;
+}
+
+body::after{
+    background: var(--primary-2), blueviolet;
+    bottom: -300px;
+    right:-300px;
+    opacity: 1;
+    animation-delay: -3s;
+}
+
+@keyframes float{
+    0%, 100%{transform: translate(0,0) scale(1);}
+    50% { transform: translate(50px, 80px) scale(1.1);}
+}
+
+.navbar{
+    backdrop-filter: blur(20px);
+    background: rgba(10,10,15,0.7) !important;
+    border-bottom: 1px solid var(--card-border);
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    animation: slideDown 0.6s ease;
+}
+
+@keyframes slideDown{
+    from{transform: translateY(-100%);} to { transform: translateY(0);}
+}
+
+.navbar-brand{
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size:1.6rem;
+    background: linear-gradient(90deg, var(--primary), var(--primary-2));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -1px;
+}
+
+.card, .table-container, .login-card{
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(16px);
+    border-radius: 20px;
+    max-width: 1200px !important;
+    width: 98% !important;
+    margin:20px auto !important;
+    padding: 15px !important;
+    margin-top: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.177);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: cardIn 0.7s ease backwards;
+}
+
+.card:hover{
+    transform: translateY(-8px) scale(1.01);
+    border-color: rgba(124,58,237,0.5);
+    box-shadow: 0 20px 50px rgba(124,58,237,0.25);
+}
+
+@keyframes cardIn{
+    from { opacity:0; transform: translateY(30px);}
+    to {opacity:1; transform: translateY(0);}
+}
+
+table{
+    margin: 0 auto !important;
+    width: 100% !important;
+}
+
+.table{
+    color: var(--text);
+    --bs-table-bg: transparent;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    text-align: center;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+    table-layout: auto !important;
+}
+
+th, td{
+    text-align: center !important;
+    padding: 6px 4px !important;
+    vertical-align: middle !important;
+}
+
+.table thead th{
+    font-family: 'Space Grotesk', sans-serif;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+    color: white;
+    border-bottom: 1px solid var(--card-border);
+    padding: 1.2rem 1rem;
+}
+.table tbody tr{
+    transition: 0.3s;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.table tbody tr:hover{
+    background: rgba(59, 4, 225, 0.459) !important;
+}
+
+.table-responsive{
+    width: 100% !important;
+    overflow-x: auto !important;
+    display: block !important;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive table{
+    min-width: 700px !important;
+}
+
+.table-responsive::-webkit-scrollbar{ height: 6px; }
+.table-responsive::-webkit-scrollbar-thumb{ background: #7c3aed; border-radius: 10px; }
+
+.btn{
+    border-radius: 12px;
+    padding: 0.7rem 1.6rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s;
+}
+.btn:hover{ background: blue; }
+
+.btn-primary{
+    background: linear-gradient(90deg, var(--primary), var(--primary-2));
+    box-shadow: 0 4px 20px rgba(124,58,237,0.4);
+}
+
+.form-control, .form-select{
+    background: rgba(255, 255, 255, 0) !important;
+    border: 1px solid black !important;
+    color: var(--text) !important;
+    padding: 7px;
+    font-size: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+.form-control:focus, .form-select:focus{
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 4px rgba(124,58,237,0.2)!important;
+}
+.form-control::placeholder{ color: var(--text-dim); }
+
+/* ===== LOGIN CENTER KAMA SYSTEM ZA KAWAIDA ===== */
+.login-wrapper{
+    min-height: 100vh !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 20px !important;
+}
+
+.login-card{
+    width: 100% !important;
+    max-width: 420px !important;
+    margin: 0 auto !important;
+    padding: 30px 25px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+}
+
+.login-card input, 
+.login-card .form-control, 
+.login-card .form-select,
+#passwordForm{
+    width: 85% !important;
+    max-width: 300px !important;
+    margin: 10px auto !important;
+    display: block !important;
+    text-align: center !important;
+}
+
+.login-card button, 
+.login-card .btn{
+    margin: 15px auto 0 auto !important;
+    display: block !important;
+    min-width: 120px !important;
+}
+
+.login-card h3, .login-card h5{
+    width: 100% !important;
+    text-align: center !important;
+    margin-bottom: 20px !important;
+}
+
+::-webkit-scrollbar{ width: 8px;}
+::-webkit-scrollbar-thumb{ background: var(--primary), blue; border-radius: 10px; }
+::-webkit-scrollbar-track{ background: var(--bg), cornflowerblue;}
+
+.container{ max-width: 1100px; margin: 0 auto !important; padding: 20px; }
+input{ padding: 5px; border-radius: 8px; background: white; }
+ul{ text-align: left; list-style: none; }
+ul a{ text-decoration: none; padding: 4px; border-radius: 5px; color: white; }
+ul a:hover{ background:#042d66 }
+#logout{ color:#f43f5e; }
+#o{ color: black; text-decoration: none; background: white; cursor: pointer; }
+#o:hover{ background:#10b981; }
+#f:hover{ background: rgba(59, 4, 225, 0.459) !important; }
+.btn-toa{
+    box-shadow: 0 4px 10px rgba(255,59,59,0.4);
+    background:#ff3b3b;
+    color:white;
+    padding:10px 20px;
+    border-radius:10px;
+    border:none;
+    font-weight:bold;
+    cursor: pointer;
+}
+#futa:hover{ background: red; color: white; }
+
+/* BUTTON NA MANENO KATI */
+.col-md-3{
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin: 0 auto !important;
+}
+
+h5.text-center, h5, .card h5{
+    text-align: center !important;
+    width: 100% !important;
+    display: block !important;
+    margin: 10px auto !important;
+}
+
+@media (max-width: 768px){
+    .login-card{
+        width: 92% !important;
+        max-width: 360px !important;
+        padding: 25px 20px !important;
+    }
+    .login-card input{
+        width: 90% !important;
+    }
+    .card, .table-container{
+        width: 98% !important;
+        max-width: 100% !important;
+        margin: 10px auto !important;
+        padding: 10px !important;
+        overflow: visible !important;
+    }
+    .container{
+        max-width: 100% !important;
+        padding: 10px !important;
+    }
+}
+
+/* ========= FIX PEKEE - BILA KUATHIRI KINGINE ========= */
+/* 1. Margin 0.5px kwa card za table */
+.card.p-4.shadow{
+    margin-left: 0.5px !important;
+    margin-right: 0.5px !important;
+    width: calc(100% - 1px) !important;
+    max-width: calc(100% - 1px) !important;
+}
+/* 2. Data isitoke nje - Last Login na Username */
+.card .table td:nth-child(1),
+.card .table td:nth-child(3){
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+}
+/* 3. Ondoa min-width inayofanya table itoke nje */
+.card .table-responsive table{
+    min-width: 100% !important;
+}

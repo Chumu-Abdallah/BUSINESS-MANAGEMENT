@@ -1,0 +1,26 @@
+{% extends 'stock/base.html' %}
+{% block content %}
+<div class="card col-md-6 mx-outo p-4 shadow">
+    <br>
+   
+    <h4>Ongeza Bithaa Mpya</h4><br>
+    <div class="card p-2 shadow">
+    <form method="POST">
+        {% csrf_token %}
+        <input id="i" name="jina" class="form-control mb-2" placeholder="Jina la Bidhaa" required>
+        <br>
+        <input id="i" name="barcode" class="form-control mb-2" placeholder="Barcode (silazima)">
+        <br>
+        <input id="i" name="stock" type="number" class="form-control mb-2" placeholder="Stock" required min="0">
+        <br>
+        <input id="bei_kununua"  name="bei_kununua" onkeyup="hesabuFaidaLive()" tybe="number" class="form-control mb-2" placeholder="Bei ya Kununua" required min="0">
+        <br>
+        <input id="bei_kuuza" name="bei_kuuza" onkeyup="hesabuFaidaLive()" type="number" class="form-control mb-2" placeholder="bei ya kuuza" required min="0"><br>
+        <br>
+        <p id="faidaPreview" class="text-success fw-bold"></p><br>
+        <button id="o" class="btn btn-dark w-100" type="submit">Hifadhi Kwenye Database</button><br>
+        <br>
+    </form>
+    </div>
+</div>
+{%  endblock %}

@@ -1,0 +1,59 @@
+{% extends 'stock/base.html' %}
+{% block content %}
+{% load humanize %}
+<h2 style="text-align: center; margin-bottom: 20px;">Ripoti kamili ya Mwaka {{ mwaka_jana }}</h2>
+
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;">
+    <div style="background: #1e293b; padding: 14px; border-radius: 12px; border-left: 4px solid #22c55e;">
+        <small style="color:#94a3b8">Mapato Ya Mwaka:</small><br><b style="font-size: 18px;">{{ faida_yote|intcomma }} Tsh</b>
+    </div>
+
+    <div style="background: #1e293b; padding: 14px; border-radius: 12px; border-left: 4px solid #ef4444;">
+        <small style="color:#94a3b8">Matumizi ya Mwaka:</small><br><b style="font-size: 18px;">{{ matumizi|intcomma }} Tsh</b>
+    </div>
+
+    <div style="background: #1e293b; padding: 14px; border-radius: 12px; border-left: 4px solid #06b6d4;">
+        <small style="color:#94a3b8">Faida Baada ya matumizi:</small><br><b style="font-size: 18px;">{{ jumla_faida_mwaka|intcomma }} Tsh</b>
+    </div>
+
+    <div style="background: #1e293b; padding: 14px; border-radius: 12px; border-left: 4px solid #facc15;">
+        <small style="color:#94a3b8">Bidhaa Zili Zouzwa Mwakahuu:</small><br><b style="font-size: 18px;">{{ bidhaa }} pcs / {{ mauzo|intcomma }} mauzo</b>
+    </div>
+</div>
+
+<div style="background: #1e293b; border-radius:12px; overflow-x:auto;">
+    <table style="width:100%; border-collapse: collapse; min-width:650px; margin:20px auto !important; max-width:500px;">
+        <tr style="background:#312e81; color:#a5b4fc; text-align:left;">
+            <th style="padding:12px;">Mwezi</th>
+            <th>Mauzo</th>
+            <th>Bidhaa</th>
+            <th>Faida Kamili</th>
+            <th>Matumizi</th>
+            <th>Faida Baki</th>
+        </tr>
+        {% for m in ripoti_miezi %}
+        <tr style="border-bottom: 1px solid #334155;">
+            <td style="padding:10px;">{{ m.jina }}</td>
+            <td>{{ m.mauzo }}</td>
+            <td>{{ m.bidhaa }}</td>
+            <td style="color:#22c55e;">{{ m.faida_yote|intcomma }}</td>
+            <td style="color:#ef4444;">{{ m.matumizi|intcomma }}</td>
+            <td style="color:#06b6d4;"><b>{{ m.baki|intcomma }}</b></td>
+        </tr>
+        {% endfor %}
+        <tr style="background: #1e1b4b; font-weight:bolb; border-top:2px solid #4f46e5;">
+            <td style="padding:12px;">JUMLA MWAKA</td>
+            <td>{{ total_mauzo }}</td>
+            <td>{{ total_bidhaa }} pcs</td>
+            <td style="color: #22c55e;">{{ total_faida_yote|intcomma}}</td>
+            <td style="color: #ef4444;">{{total_matumizi|intcomma}}</td>
+            <td style="color: #06b6d4;">{{total_baki|intcomma}}</td>
+        </tr>
+    </table>
+</div>
+<div style=" justify-content: center; display: flex;">
+<!--<a id="o" href="/" style="display:block; text-align:center; padding:12px; border-radius: 10px; margin-top: 20px; text-decoration: none;">
+    Home
+</a>-->
+</div>
+{% endblock %}

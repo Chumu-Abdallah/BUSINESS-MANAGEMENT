@@ -1,0 +1,183 @@
+{% extends 'stock/base.html' %}
+{% block content %}
+{% load humanize %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<div class="col-md-3">
+    <input id="searchInput" onclick="searchBidhaa()" class="form-contol search-box" placeholder="🔍 Tafuta bithaa...">
+</div>
+
+{% if low_stock %}
+<div id="logout" class="alert alert-danger">TAHATHARI: {{low_stock|join:", "}} zimebaki chini ya 5!</div>
+{% endif %}
+    <div style="background: #1e293b; border-radius:12px;"></div>
+    <div class="container d-flex justify-content-center" style="overflow:visible;  margin-left:0.5px; margin-right:0.5px; width:calc(100% - 1px);">
+    <div class="card p-4 shadow bidhaa-box" style="overflow:visible; width:100%;  margin-left:0.5px; margin-right:0.5px; width:calc(100% - 1px);"><br>
+    {% if request.user.is_superuser %}
+    <div class="col-md-3">
+        <a id="o" href="/ongeza/" class="btn btn-dack w-100 p-2">+ Ongeza Bidhaa</a>
+    </div>
+    {% endif %}
+    <br>
+    
+    <h5 class="text-center"><b>Bidhaa Zilizopo Dukani</b></h5><br>
+
+    <div class="table-responsive" style="width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; display:block;">
+    <table class="table table-bordered text-center mt-3" style="min-width:650px; white-space:nowrap;">
+    <thead class="table-dack">
+        <tr style="background: rgb(1, 1, 62); border-radius: 5px;">
+            <th>Jina</th>
+            <th>Stock</th>
+            {% if request.user.is_superuser %}
+            <th>Kununua</th>
+            {% endif %}
+            <th>KUUZA</th>
+            {% if request.user.is_superuser %}
+            <th>Faida</th>
+            {% endif %}
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody> 
+        {% for p in products %}
+        <tr class="{% if p.stock < 5 %}card-low{% endif %}"> 
+            <td>{{p.jina}}<br><small class="text-muted">{{p.barcode}}</small></td>
+            <td><span class="badge {% if p.stock < 5 %}bg-danger{% else %}bg-success{% endif %}">{{p.stock}}</span></td>
+            {% if request.user.is_superuser %}
+            <td>{{p.bei_kununua|intcomma}}</td>
+            {% endif %}
+            <td>{{p.bei_kuuza|intcomma}}</td>
+            {% if request.user.is_superuser %}
+            <td class="text-success fw-bold">{{ p.faida|intcomma }}</td>
+            {% endif %}
+            <td>
+                <div>
+                <button id="o" class="btn btn-success btn-sm" onclick="uzaBidhaa('{{p.jina}}', '{{p.stock}}', '{{p.id}}')" style="padding: 5px;">Uza 1</button>
+                <button id="o" class="btn btn-warning btn-sm" onclick="uzaZaidi('{{p.jina}}', '{{p.stock}}', '{{p.id}}')" style="padding: 5px;">Uza Zaidi</button>
+                {% if user.is_superuser %}
+                <a id="futa" href="/futa/{{p.id}}" class="btn btn-danger btn-sm" style="color: rgba(228, 10, 10, 0.93); text-decoration: none; background: white; padding: 5px;">Futa</a>
+                {% endif %} 
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+</div>
+</div> 
+
+{% if request.user.is_superuser %}
+<!--REPORT YA MATUMIZI KWA  KILA MWEZI YA MWAKA-->
+<div style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); padding:16px; border-radius: 16px; border:1px solid #4f46e5; margin-bottom: 16px;">
+    <h3 style="margin:0 0 12px 0; color:white;">Faida ya {{mwezi_huu}} {{mwaka_huu}}</h3>
+    <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 10px; margin-bottom: 12px;">
+        <div id="f" style="display:flex; justify-content:space-between; padding: 8px 0; border-bottom:2px solid rgba(255,255,255,0.1);">
+            <span  style="color:#a5b4fc">Faida kamili:</span><b style="color:#22c55e">{{faida_yote|intcomma}} Tsh</b>
+        </div>
+         <div id="f" style="display:flex; justify-content:space-between; padding: 8px 0; border-bottom:2px solid rgba(255,255,255,0.1);">
+            <span style="color:#a5b4fc">Matumizi:</span><b style="color:#ef4444">{{matumizi|intcomma}} Tsh</b>
+        </div>
+         <div id="f" style="display:flex; justify-content:space-between; padding: 8px 0; border-bottom:2px solid rgba(255,255,255,0.1);">
+            <span style="color:#a5b4fc">Faida baki:</span><b style="color:#06b6d4">{{faida_baada|intcomma}} Tsh</b>
+        </div>
+         <div id="f" style="display:flex; justify-content:space-between; padding: 8px 0; border-bottom:2px solid rgba(255,255,255,0.1);">
+            <span style="color:#a5b4fc">Mauzo:</span><b>{{mauzo}} mauzo</b>
+        </div>
+         <div id="f" style="display:flex; justify-content:space-between; padding: 8px 0; border-bottom:2px solid rgba(255,255,255,0.1);">
+            <span style="color:#a5b4fc">Bidhaa Zilizouzwa:</span><b>{{bidhaa}} pcs</b>
+        </div>
+    </div>
+    <br><br>
+    <div tyle="display:flex; gap:10; justify-content:center; margin:15px;">
+        <button class="btn-toa" id="fungua">Toa Matumizi</button>
+    </div>
+    <br>   
+    <div id="matumizi" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:9999;">
+        <div tyle="background:white; width:30%; max-width:100px; margin:120px auto; padding: 20px; border-radius:15px;"><br><br><br>
+            <h3 style="text-align:center;">Punguza Matumizi</h3>
+            <form method="POST" action="/toa_matumizi/">
+                {% csrf_token %}
+                <label>Kiai (Tsh):</label><br>
+                <input type="number" name="matumizi" min="100" required style="width:49%; padding:10px; border-radius:8px; margin:8px 0 15px 0; border:2px solid blue;" placeholder="Weka Kiasi Cha Matumizi"><br>
+                <label>Maelezo:</label><br>
+                <input type="text" mame="maelezo" placeholder="mf: Kodi, Nauli, Chakula, Matibabu. etc" required style="width:49%; padding:10px; border-radius:8px; margin:8px 0 15px 0; border:2px solid blue;">
+                <div style="display: flex 1; gap:10px;">
+                    <button type="button" id="funga" style="flex:1; padding:10px; background:#666; color:white; border-radius:8px; width:24%; border:2px solid blue;">Ghairi</button>
+                    <button type="submit" style="flex:1; padding:10px; background:#ff3b3b; color:white; border:2px solid blue; border-radius:8px; font-weight:bold; width:24%;">Punguza Sasa</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+    {% if messages %}
+    <script>
+        {% for message in messages %}
+            {% if 'success' in message.tags %}
+                Swal.fire({ icon: 'success', title: 'Imefanikiwa!', text: '{{ message }}', confirmButtonColor: '#22c55e' });
+            {% else %}
+                Swal.fire({ icon: 'error', title: 'Imeshindikana!', text: '{{ message }}', confirmButtonColor: '#ff3b3b' });
+            {% endif %}
+        {% endfor %}
+    </script>
+    {% endif %}
+    <script>
+        document.getElementById('fungua').onclick = function(){ document.getElementById('matumizi').style.display = 'block'; }
+        document.getElementById('funga').onclick = function(){ document.getElementById('matumizi').style.display = 'none'; }
+        window.onclick = function(event){ if (event.target == document.getElementById('matumizi')){ document.getElementById('matumizi').style.display = 'none'; } }
+    </script>
+    <br>
+</div>
+<br>
+ <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius:10px; max-height:350px; overflow-y:auto; overflow-x:auto;">
+    <b style="font-size: 13px;">Muhtasari Wa Kila Siku</b>
+    <table style="width:100%; font-size:11px; color: white; border-collapse: collapse; margin-top:8px; margin:20px auto !important;">
+        <tr style="color:#a5b4fc; position: sticky; top:0; background:#1e1b4b;">
+            <th style="text-align: left; padding:6px;">Siku</th>
+            <th>Bithaa Leo</th>
+            <th>Jumla ya Bidhaa</th>
+            <th>Faida leo</th>
+            <th>Jumla ya faida</th>
+            <th>Matumizi leo</th>
+            <th>Jumla ya Matumizi</th>
+            <th>Baki/faida</th>
+        </tr>
+        {% for p in progress_siku reversed %}
+        {% if p.jumla is not None %}
+        <tr id="f" style="border-bottom:1px solid rgba(255,255,255,0.05);">
+            <td style="padding:6px;">{{p.siku}}/{{mwezi_huu}}/{{mwaka_huu}}</td>
+            <td >{{p.bidhaa_siku}} pcs</td>
+            <td style="color:#afcc15;"><b>{{p.bidhaa_total}}</b></td>
+            <td style="color:#22c55e;">{{p.faida_siku|intcomma}}</td>
+            <td style="color:#22c55e;"><b>{{p.faida_total|intcomma}}</b></td>
+            <td style="color:#ef4444;">{{p.matumizi_siku|intcomma}}</td>
+            <td style="color:#ef4444;">{{p.matumizi_total|intcomma}}</td>
+            <td style="color:#06b6d4;"><b>{{p.jumla|intcomma}}</b></td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </table>
+    <div style=" justify-content: center; display: flex;">
+    <a id="o" href="{% url 'ripoti_mwaka' mwaka_huu %}" style="display:block; text-align:center; padding: 12px; border-radius: 10px; margin-top:14px; text-decoration: none; font-weight: bold; width: 32%;">
+        Ripoti Ya {{mwaka_huu}}
+    </a><br><br>
+    </div>
+ </div>
+</div>
+<br><br>
+<div style="background: rgba(0,0,0,0.2); padding:10px; border-radius: 10px;margin-bottom: 12px;">
+    <small style="color:#a5b4fc;">Seling Progress:</small>
+    <div style="display:flex; align-items:end; gap:3px; height:90px; margin-top:10px;">
+        {% for p in progress_siku %}
+        {% if p.jumla is not None %}
+        <div style="flex:1; background:linear-gragient(to top, #22c55e, #06b6d4); height:{% widthratio p.jumla max_faida 100 %}%; min-height:5px; border-radius:3px;" title="Siku {{p.siku}}: {{p.jumla}}"></div>
+        {% else %}
+        <div style="flex:1; background: rgba(255,255,255,0.1); height:3px; border-radius:2px;"></div>
+        {% endif %}
+        {% endfor %} 
+    </div>
+    <div style="background: rgba(0,0,0,0.2); padding:10px; border:10px; color:#6b7280; margin-top:5px;"><span>Leo: {{leo_siku}} </span><span> {{mwezi_huu_jina}} </span><span>{{mwaka_huu}}</span></div>
+</div>
+ {% endif %}
+{% endblock %}
